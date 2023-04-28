@@ -19,7 +19,7 @@ All development is conducted in the `src` folder.
 To run the local server and start developing, use this command:
 
 ```
-gulp
+gulp dev
 ```
 
 To build the project run this command:
