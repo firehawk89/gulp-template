@@ -97,6 +97,10 @@ function imgTask() {
     .pipe(dest(path.build.img));
 }
 
+function fontsTask() {
+  return src(path.src.fonts).pipe(dest(path.build.fonts));
+}
+
 function cleanDest() {
   return del([path.clean, path.ignore.img]);
 }
@@ -107,7 +111,7 @@ function watcher() {
   watch([path.watch.js], jsTask);
 }
 
-const tasks = parallel(htmlTask, cssTask, jsTask, imgTask);
+const tasks = parallel(htmlTask, cssTask, jsTask, imgTask, fontsTask);
 const dev = series(cleanDest, tasks, parallel(watcher, sync));
 
 exports.default = dev;
