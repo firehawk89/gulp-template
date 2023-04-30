@@ -5,58 +5,85 @@ const concat = require("gulp-concat");
 const uglify = require("gulp-uglify-es").default;
 const browserSync = require("browser-sync").create();
 const autoprefixer = require("gulp-autoprefixer");
-const clean = require("gulp-clean");
+const del = require("del");
 
-function styles() {
-  return (
-    src("src/scss/style.scss")
-      .pipe(autoprefixer({ overrideBrowserslist: ["last 10 version"] }))
-      /*     .pipe(scss())
-    .pipe(dest("src/css")) */
-      .pipe(concat("style.min.css"))
-      .pipe(scss({ outputStyle: "compressed" }))
-      .pipe(dest("src/css"))
-      .pipe(browserSync.stream())
-  );
-}
+const buildPath = "./build";
+const srcPath = "./src";
 
-function scripts() {
-  return (
-    src("src/js/index.js")
-      /*src(["node_modules/swiper/swiper-bundle.js", "src/js/index.js"])*/
-      .pipe(concat("index.min.js"))
-      .pipe(uglify())
-      .pipe(dest("src/js"))
-      .pipe(browserSync.stream())
-  );
-}
+const path = {
+  src: {
+    html: `${srcPath}/*.html`,
+    scss: `${srcPath}/scss/style.scss`,
+    js: `${srcPath}/js/**/*.js`,
+    img: `${srcPath}/assets/img/**/*.{jpg,jpeg,png,svg,gif}`,
+    fonts: `${srcPath}/assets/fonts/**/*.{eot,ttf,woff,woff2,svg}`,
+  },
+  build: {
+    html: `${buildPath}/`,
+    css: `${buildPath}/css/`,
+    js: `${buildPath}/js/`,
+    img: `${buildPath}/img/`,
+    fonts: `${buildPath}/fonts/`,
+  },
+  watch: {
+    html: `${srcPath}/*.html`,
+    scss: `${srcPath}/scss/**/*.scss`,
+    js: `${srcPath}/js/**/*.js`,
+    img: `${srcPath}/assets/img/**/*.{jpg,jpeg,png,svg,gif}`,
+    fonts: `${srcPath}/assets/fonts/**/*.{eot,ttf,woff,woff2,svg}`,
+  },
+  clean: buildPath,
+};
 
 function sync() {
   browserSync.init({
     server: {
-      baseDir: "src/",
+      baseDir: buildPath,
     },
+    notify: false,
+    port: 3000,
   });
 }
 
+function htmlTask() {
+  return src(path.src.html)
+    .pipe(dest(path.build.html))
+    .pipe(browserSync.reload({ stream: true }));
+}
+
+function cssTask() {
+  return src(path.src.scss)
+    .pipe(autoprefixer({ overrideBrowserslist: ["last 5 version"] }))
+    .pipe(scss())
+    .pipe(dest(path.build.css))
+    .pipe(concat("style.min.css"))
+    .pipe(scss({ outputStyle: "compressed" }))
+    .pipe(dest(path.build.css))
+    .pipe(browserSync.reload({ stream: true }));
+}
+
+function jsTask() {
+  return (
+    src(path.src.js)
+      /*src(["node_modules/swiper/swiper-bundle.js", path.src.js])*/
+      .pipe(concat("index.min.js"))
+      .pipe(uglify())
+      .pipe(dest(path.build.js))
+      .pipe(browserSync.reload({ stream: true }))
+  );
+}
+
 function cleanDest() {
-  return src("build").pipe(clean());
+  return del(path.clean);
 }
 
-function building() {
-  return src(
-    ["src/css/style.min.css", "src/js/index.min.js", "src/**/*.html"],
-    { base: "src" }
-  ).pipe(dest("build"));
+function watcher() {
+  watch([path.watch.html], htmlTask);
+  watch([path.watch.scss], cssTask);
+  watch([path.watch.js], jsTask);
 }
 
-function run() {
-  watch(["src/scss/style.scss"], styles);
-  watch(["src/js/index.js"], scripts);
-  watch(["src/**/*.html"]).on("change", browserSync.reload);
-}
+const tasks = parallel(htmlTask, cssTask, jsTask);
+const dev = series(cleanDest, tasks, parallel(watcher, sync));
 
-/* module.exports = { styles, scripts, sync, run }; */
-
-exports.build = series(cleanDest, building);
-module.exports.default = parallel(styles, scripts, sync, run);
+exports.default = dev;
