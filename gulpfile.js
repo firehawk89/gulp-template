@@ -1,10 +1,13 @@
 const { src, dest, watch, parallel, series } = require("gulp");
 
+const browserSync = require("browser-sync").create();
 const scss = require("gulp-sass")(require("sass"));
+const autoprefixer = require("gulp-autoprefixer");
 const concat = require("gulp-concat");
 const uglify = require("gulp-uglify-es").default;
-const browserSync = require("browser-sync").create();
-const autoprefixer = require("gulp-autoprefixer");
+const babel = require("gulp-babel");
+const newer = require("gulp-newer");
+const imagemin = require("gulp-imagemin");
 const del = require("del");
 const plumber = require("gulp-plumber");
 const notifier = require("gulp-notifier");
@@ -34,7 +37,10 @@ const path = {
     img: `${srcPath}/assets/img/**/*.{jpg,jpeg,png,svg,gif}`,
     fonts: `${srcPath}/assets/fonts/**/*.{eot,ttf,woff,woff2,svg}`,
   },
-  clean: buildPath,
+  clean: `${buildPath}/*`,
+  ignore: {
+    img: `!${buildPath}/img`,
+  },
 };
 
 function sync() {
@@ -70,6 +76,7 @@ function jsTask() {
     src(path.src.js)
       .pipe(plumber({ errorHandler: notifier.error }))
       /*src(["node_modules/swiper/swiper-bundle.js", path.src.js])*/
+      .pipe(babel({ presets: ["@babel/env"] }))
       .pipe(concat("index.min.js"))
       .pipe(uglify())
       .pipe(dest(path.build.js))
@@ -77,8 +84,21 @@ function jsTask() {
   );
 }
 
+function imgTask() {
+  return src(path.src.img)
+    .pipe(newer(path.build.img))
+    .pipe(
+      imagemin({
+        optimizationLevel: 4,
+        svgoPlugins: [{ removeViewBox: false }],
+        progressive: true,
+      })
+    )
+    .pipe(dest(path.build.img));
+}
+
 function cleanDest() {
-  return del(path.clean);
+  return del([path.clean, path.ignore.img]);
 }
 
 function watcher() {
@@ -87,7 +107,7 @@ function watcher() {
   watch([path.watch.js], jsTask);
 }
 
-const tasks = parallel(htmlTask, cssTask, jsTask);
+const tasks = parallel(htmlTask, cssTask, jsTask, imgTask);
 const dev = series(cleanDest, tasks, parallel(watcher, sync));
 
 exports.default = dev;
