@@ -6,6 +6,8 @@ const uglify = require("gulp-uglify-es").default;
 const browserSync = require("browser-sync").create();
 const autoprefixer = require("gulp-autoprefixer");
 const del = require("del");
+const plumber = require("gulp-plumber");
+const notifier = require("gulp-notifier");
 
 const buildPath = "./build";
 const srcPath = "./src";
@@ -53,6 +55,7 @@ function htmlTask() {
 
 function cssTask() {
   return src(path.src.scss)
+    .pipe(plumber({ errorHandler: notifier.error }))
     .pipe(autoprefixer({ overrideBrowserslist: ["last 5 version"] }))
     .pipe(scss())
     .pipe(dest(path.build.css))
@@ -65,6 +68,7 @@ function cssTask() {
 function jsTask() {
   return (
     src(path.src.js)
+      .pipe(plumber({ errorHandler: notifier.error }))
       /*src(["node_modules/swiper/swiper-bundle.js", path.src.js])*/
       .pipe(concat("index.min.js"))
       .pipe(uglify())
