@@ -8,10 +8,11 @@ const uglify = require("gulp-uglify-es").default;
 const babel = require("gulp-babel");
 const newer = require("gulp-newer");
 const imagemin = require("gulp-imagemin");
+const fonter = require("gulp-fonter");
+const tt2woff2 = require("gulp-ttf2woff2");
 const del = require("del");
 const plumber = require("gulp-plumber");
 const notifier = require("gulp-notifier");
-
 const buildPath = "./build";
 const srcPath = "./src";
 
@@ -40,6 +41,7 @@ const path = {
   clean: `${buildPath}/*`,
   ignore: {
     img: `!${buildPath}/img`,
+    fonts: `!${buildPath}/fonts`,
   },
 };
 
@@ -98,11 +100,16 @@ function imgTask() {
 }
 
 function fontsTask() {
-  return src(path.src.fonts).pipe(dest(path.build.fonts));
+  return src(path.src.fonts)
+    .pipe(newer(path.build.fonts))
+    .pipe(fonter({ formats: ["ttf", "woff"] }))
+    .pipe(dest(path.build.fonts))
+    .pipe(tt2woff2())
+    .pipe(dest(path.build.fonts));
 }
 
 function cleanDest() {
-  return del([path.clean, path.ignore.img]);
+  return del([path.clean, path.ignore.img, path.ignore.fonts]);
 }
 
 function watcher() {
@@ -114,4 +121,6 @@ function watcher() {
 const tasks = parallel(htmlTask, cssTask, jsTask, imgTask, fontsTask);
 const dev = series(cleanDest, tasks, parallel(watcher, sync));
 
+exports.cleanDest = cleanDest;
+exports.fontsTask = fontsTask;
 exports.default = dev;
