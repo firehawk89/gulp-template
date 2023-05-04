@@ -7,12 +7,14 @@ const concat = require("gulp-concat");
 const uglify = require("gulp-uglify-es").default;
 const babel = require("gulp-babel");
 const newer = require("gulp-newer");
+const webp = require("gulp-webp");
 const imagemin = require("gulp-imagemin");
 const fonter = require("gulp-fonter");
 const tt2woff2 = require("gulp-ttf2woff2");
 const del = require("del");
 const plumber = require("gulp-plumber");
 const notifier = require("gulp-notifier");
+
 const buildPath = "./build";
 const srcPath = "./src";
 
@@ -64,7 +66,7 @@ function htmlTask() {
 function cssTask() {
   return src(path.src.scss)
     .pipe(plumber({ errorHandler: notifier.error }))
-    .pipe(autoprefixer({ overrideBrowserslist: ["last 5 version"] }))
+    .pipe(autoprefixer({ overrideBrowserslist: ["last 5 versions"] }))
     .pipe(scss())
     .pipe(dest(path.build.css))
     .pipe(concat("style.min.css"))
@@ -88,19 +90,28 @@ function jsTask() {
 
 function imgTask() {
   return src(path.src.img)
+    .pipe(plumber({ errorHandler: notifier.error }))
+    .pipe(newer(path.build.img))
+    .pipe(webp())
+    .pipe(dest(path.build.img))
+    .pipe(src(path.src.img))
     .pipe(newer(path.build.img))
     .pipe(
-      imagemin({
-        optimizationLevel: 4,
-        svgoPlugins: [{ removeViewBox: false }],
-        progressive: true,
-      })
+      imagemin([
+        imagemin.gifsicle({ interlaced: true }),
+        imagemin.mozjpeg({ quality: 80, progressive: true }),
+        imagemin.optipng({ optimizationLevel: 4 }),
+        imagemin.svgo({
+          plugins: [{ removeViewBox: false }],
+        }),
+      ])
     )
     .pipe(dest(path.build.img));
 }
 
 function fontsTask() {
   return src(path.src.fonts)
+    .pipe(plumber({ errorHandler: notifier.error }))
     .pipe(newer(path.build.fonts))
     .pipe(fonter({ formats: ["ttf", "woff"] }))
     .pipe(dest(path.build.fonts))
@@ -121,6 +132,6 @@ function watcher() {
 const tasks = parallel(htmlTask, cssTask, jsTask, imgTask, fontsTask);
 const dev = series(cleanDest, tasks, parallel(watcher, sync));
 
-exports.cleanDest = cleanDest;
-exports.fontsTask = fontsTask;
+exports.imgTask = imgTask;
+
 exports.default = dev;
