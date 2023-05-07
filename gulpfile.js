@@ -127,11 +127,11 @@ function watcher() {
   watch([path.watch.html], htmlTask);
   watch([path.watch.scss], cssTask);
   watch([path.watch.js], jsTask);
+  watch([path.watch.img], imgTask);
+  watch([path.watch.fonts], fontsTask);
 }
 
 const tasks = parallel(htmlTask, cssTask, jsTask, imgTask, fontsTask);
 const dev = series(cleanDest, tasks, parallel(watcher, sync));
-
-exports.imgTask = imgTask;
 
 exports.default = dev;
