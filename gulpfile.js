@@ -5,7 +5,6 @@ const scss = require("gulp-sass")(require("sass"));
 const autoprefixer = require("gulp-autoprefixer");
 const concat = require("gulp-concat");
 const uglify = require("gulp-uglify-es").default;
-const babel = require("gulp-babel");
 const newer = require("gulp-newer");
 const webp = require("gulp-webp");
 const imagemin = require("gulp-imagemin");
@@ -63,11 +62,11 @@ function htmlTask() {
     .pipe(browserSync.reload({ stream: true }));
 }
 
-function cssTask() {
+function scssTask() {
   return src(path.src.scss)
     .pipe(plumber({ errorHandler: notifier.error }))
-    .pipe(autoprefixer({ overrideBrowserslist: ["last 5 versions"] }))
     .pipe(scss())
+    .pipe(autoprefixer({ overrideBrowserslist: ["last 5 version"] }))
     .pipe(dest(path.build.css))
     .pipe(concat("style.min.css"))
     .pipe(scss({ outputStyle: "compressed" }))
@@ -80,7 +79,6 @@ function jsTask() {
     src(path.src.js)
       .pipe(plumber({ errorHandler: notifier.error }))
       /*src(["node_modules/swiper/swiper-bundle.js", path.src.js])*/
-      .pipe(babel({ presets: ["@babel/env"] }))
       .pipe(concat("index.min.js"))
       .pipe(uglify())
       .pipe(dest(path.build.js))
@@ -113,7 +111,7 @@ function fontsTask() {
   return src(path.src.fonts)
     .pipe(plumber({ errorHandler: notifier.error }))
     .pipe(newer(path.build.fonts))
-    .pipe(fonter({ formats: ["ttf", "woff"] }))
+    .pipe(fonter({ formats: ["eot", "ttf", "woff"] }))
     .pipe(dest(path.build.fonts))
     .pipe(tt2woff2())
     .pipe(dest(path.build.fonts));
@@ -125,13 +123,13 @@ function cleanDest() {
 
 function watcher() {
   watch([path.watch.html], htmlTask);
-  watch([path.watch.scss], cssTask);
+  watch([path.watch.scss], scssTask);
   watch([path.watch.js], jsTask);
   watch([path.watch.img], imgTask);
   watch([path.watch.fonts], fontsTask);
 }
 
-const tasks = parallel(htmlTask, cssTask, jsTask, imgTask, fontsTask);
+const tasks = parallel(htmlTask, scssTask, jsTask, imgTask, fontsTask);
 const dev = series(cleanDest, tasks, parallel(watcher, sync));
 
 exports.default = dev;
