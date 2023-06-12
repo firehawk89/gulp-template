@@ -9,13 +9,10 @@
   "author": "Bochkovskyi",
   "license": "ISC",
   "devDependencies": {
-    "@babel/core": "^7.21.5",
-    "@babel/preset-env": "^7.21.5",
     "browser-sync": "^2.29.1",
     "del": "^6.1.1",
     "gulp": "^4.0.2",
     "gulp-autoprefixer": "^8.0.0",
-    "gulp-babel": "^8.0.0",
     "gulp-concat": "^2.6.1",
     "gulp-fonter": "^0.3.0",
     "gulp-imagemin": "^7.1.0",
