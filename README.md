@@ -41,4 +41,4 @@ So when you change something in the `src` folder, result appears in the `build` 
 
 When you will finish the development, `build` folder will consist of all needed result files (i.e. minified code, images, transpiled fonts etc.)
 
-⚠️ **_Important note:_ direct changes in the files of `build` folder won't be reflected on your page in the browser, and even could be cleared during next page reload after saving changes in the `src` folder, so consider changing files only in the `src` folder.**
+⚠️ **_Important note:_ direct changes in the `build` folder won't be reflected on your page, and files even could change during next page reload after saving changes in the `src` folder, so consider changing files only in the `src` folder.**
