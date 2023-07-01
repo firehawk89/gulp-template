@@ -1,31 +1,33 @@
 # GULP template
 
-This is my GULP template for websites developing using SCSS and autoprefixer.
+This is my GULP template for websites developing using SCSS preprocessor, CSS autoprefixer, font transpiler and minifiers of styles, scripts and images.
 
 ## Installation
 
-First of all consider that you have installed [Node.js](https://nodejs.org/uk) and [GULP](https://gulpjs.com/) on your computer.
+⚠️ **_Important note:_ consider that you have installed [Node.js](https://nodejs.org/uk) and [GULP](https://gulpjs.com/) on your PC.**
 
-To install template packages run this command in the project folder:
+To install all needed packages, run this command in the template folder:
 
 ```
 npm i
 ```
 
+Great! Now you're ready to develop! 🤩
+
 ## Usage
 
 All development is conducted in the `src` folder.
 
-To run the local server and start developing, use this command:
+To run a local server and start developing, use this command:
 
 ```
-gulp dev
+gulp
 ```
 
-To build the project run this command:
+When the project will be loaded, you will be redirected to the browser. Try to change something in the template code, for example in `index.html`, and you will see the results in your browser. Cool, huh? 😃
 
-```
-gulp build
-```
+You will also see that the `build` folder have appeared in your project directory. So when you change something in the `src` folder, result appears in the `build` folder immediately.
 
-The `build` folder with all needed result files will appear in your project directory.
+Finally, when you will finish the development, `build` folder will consist of all needed result files (i.e. minified code, images, transpiled fonts etc.)
+
+⚠️ **_Important note:_ direct changes in the files of `build` folder won't be reflected on your page in the browser, and even could be cleared during next page reload after saving changes in the `src` folder, so consider changing files only in the `src` folder.**
