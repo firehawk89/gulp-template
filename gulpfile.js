@@ -12,6 +12,7 @@ const imagemin = require("gulp-imagemin");
 const fonter = require("gulp-fonter");
 const tt2woff2 = require("gulp-ttf2woff2");
 const del = require("del");
+const replace = require("gulp-replace");
 const plumber = require("gulp-plumber");
 const notifier = require("gulp-notifier");
 
@@ -78,6 +79,7 @@ function sync() {
 
 function htmlTask() {
   return src(path.src.html)
+    .pipe(replace(/@img\//g, "img/"))
     .pipe(dest(path.build.html))
     .pipe(browserSync.reload({ stream: true }));
 }
