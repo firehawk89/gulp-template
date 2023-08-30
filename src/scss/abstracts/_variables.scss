@@ -1,1 +1,29 @@
-$orangeColor: orangered;
+@use "./functions" as *;
+
+$clr-accent: orangered;
+
+// Design Layout Sizes
+$minWidth: 320;
+$maxWidth: 1440;
+
+$containerMaxWidth: 1120;
+$containerPadding: 15;
+$containerWidth: $containerMaxWidth + calc($containerPadding * 2);
+
+// Breakpoints
+$pc: em($containerWidth);
+$tablet: em(991.98);
+$mobileMedium: em(767.98);
+$mobileSmall: em(479.98);
+
+// Icon Font
+// %ic {
+//   font-family: "icons";
+//   font-style: normal;
+//   font-weight: normal;
+//   font-variant: normal;
+//   text-transform: none;
+//   line-height: 1;
+//   -webkit-font-smoothing: antialiased;
+//   -moz-osx-font-smoothing: grayscale;
+// }

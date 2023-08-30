@@ -1,0 +1,8 @@
+@use "../abstracts" as *;
+
+[class*="__container"] {
+  box-sizing: content-box;
+  max-width: rem($containerMaxWidth);
+  margin: 0 auto;
+  padding-inline: rem($containerPadding);
+}

@@ -1,0 +1,21 @@
+@use "../abstracts" as *;
+
+.btn {
+  padding: rem(5) rem(20);
+
+  font-size: rem(24);
+
+  border: rem(1) solid $clr-accent;
+  border-radius: rem(20);
+
+  transition: all 0.3s ease;
+
+  &:hover {
+    color: #fff;
+    background-color: $clr-accent;
+  }
+
+  @include breakpoint(768) {
+    font-size: rem(18);
+  }
+}

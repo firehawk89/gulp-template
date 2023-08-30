@@ -1,0 +1,23 @@
+@use "../abstracts" as *;
+
+@font-face {
+  font-family: Montserrat;
+  font-display: swap;
+  src: url("../fonts/Montserrat-BoldItalic.woff2") format("woff2"),
+    url("../fonts/Montserrat-BoldItalic.woff") format("woff"),
+    url("../fonts/Montserrat-BoldItalic.ttf") format("ttf"),
+    url("../fonts/Montserrat-BoldItalic.eot") format("eot");
+  font-weight: 700;
+  font-style: italic;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-size: rem(24);
+  font-weight: 400;
+  line-height: normal;
+
+  @include breakpoint(768) {
+    font-size: rem(18);
+  }
+}

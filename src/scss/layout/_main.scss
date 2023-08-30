@@ -1,0 +1,68 @@
+@use "../abstracts" as *;
+
+.main {
+  padding: rem(50);
+
+  &__title {
+    font-family: Montserrat;
+    margin: 0 0 rem(25) 0;
+
+    text-align: center;
+    font-size: rem(48);
+    font-weight: 700;
+    text-transform: uppercase;
+    color: palevioletred;
+
+    @include breakpoint(768) {
+      font-size: rem(36);
+    }
+  }
+
+  &__text {
+    margin: 0 0 rem(50) 0;
+    text-align: center;
+  }
+}
+
+.general-btn {
+  position: absolute;
+  top: rem(30);
+  right: rem(30);
+}
+
+.slider {
+  position: relative;
+
+  &__slide {
+    img {
+      margin: 0 auto;
+    }
+  }
+
+  &__button {
+    position: absolute;
+    z-index: 2;
+
+    width: rem(25);
+    height: rem(40);
+    top: 50%;
+    translate: 0 -50%;
+
+    background-color: $clr-accent;
+    transition: opacity 0.3s ease;
+
+    &--prev {
+      left: 0;
+      @include mask("../img/icons/arrow-left.svg");
+    }
+
+    &--next {
+      right: 0;
+      @include mask("../img/icons/arrow-right.svg");
+    }
+
+    &--disabled {
+      opacity: 0.5;
+    }
+  }
+}

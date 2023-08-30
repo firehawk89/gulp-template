@@ -1,73 +1,13 @@
-@import "./abstracts/_abstracts-dir";
-@import "./base/_base-dir";
+@use "./abstracts" as *;
+@use "./base";
+@use "./components";
+@use "./layout";
 
 body {
   position: relative;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
   background-color: papayawhip;
 }
 
 a {
-  color: $orangeColor;
-}
-
-.main {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  max-width: 1100px;
-  padding: 0 10px;
-}
-
-.title {
-  font-family: Montserrat-BoldItalic;
-  margin: 0 0 25px 0;
-
-  text-align: center;
-  font-size: 48px;
-  text-transform: uppercase;
-  color: palevioletred;
-
-  @include _768 {
-    font-size: 36px;
-  }
-}
-
-.text {
-  margin: 0 0 50px 0;
-
-  font-size: 24px;
-  text-align: center;
-
-  @include _768 {
-    font-size: 18px;
-  }
-}
-
-.btn {
-  position: absolute;
-  top: 30px;
-  right: 30px;
-  padding: 5px 20px;
-
-  font-size: 24px;
-
-  border: 1px solid $orangeColor;
-  border-radius: 20px;
-
-  &:hover {
-    color: #fff;
-
-    background-color: $orangeColor;
-  }
-
-  @include _768 {
-    font-size: 18px;
-  }
+  color: $clr-accent;
 }
