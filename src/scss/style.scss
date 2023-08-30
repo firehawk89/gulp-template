@@ -3,6 +3,10 @@
 @use "./components";
 @use "./layout";
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   position: relative;
   background-color: papayawhip;

@@ -1,8 +1,7 @@
 export default function btnActions() {
   console.log("Hello from btn.js");
 
-  document.querySelector(".btn").addEventListener("click", (event) => {
-    event.preventDefault();
-    alert("You have clicked a button!");
+  document.querySelector(".general-btn").addEventListener("click", (event) => {
+    alert("Scrolling to slider...");
   });
 }

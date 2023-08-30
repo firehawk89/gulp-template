@@ -18,22 +18,41 @@
             consequatur dignissimos totam nemo eos quo, molestias amet id
             cupiditate ducimus porro expedita temporibus odio.
           </p>
-          <div class="slider swiper">
+          <img class="main__img" src="@img/earth.gif" alt="Earth" />
+          <div class="slider swiper" id="slider">
             <div class="slider__body swiper-wrapper">
               <div class="slider__slide swiper-slide">
-                <img src="@img/earth.gif" alt="Earth" />
+                <picture>
+                  <source
+                    srcset="@img/content/pineapple.webp"
+                    type="image/webp"
+                  />
+                  <img src="@img/content/pineapple.jpg" alt="Pineapple" />
+                </picture>
               </div>
               <div class="slider__slide swiper-slide">
-                <img src="@img/earth.gif" alt="Earth" />
+                <picture>
+                  <source
+                    srcset="@img/content/crocodile.webp"
+                    type="image/webp"
+                  />
+                  <img src="@img/content/crocodile.jpg" alt="Crocodile" />
+                </picture>
               </div>
               <div class="slider__slide swiper-slide">
-                <img src="@img/earth.gif" alt="Earth" />
+                <picture>
+                  <source
+                    srcset="@img/content/flamingo.webp"
+                    type="image/webp"
+                  />
+                  <img src="@img/content/flamingo.png" alt="Flamingo" />
+                </picture>
               </div>
             </div>
             <button class="slider__button slider__button--prev"></button>
             <button class="slider__button slider__button--next"></button>
           </div>
-          <a class="general-btn btn" href="#">Button</a>
+          <a class="general-btn btn" href="#slider">Check Out Slider</a>
         </div>
       </main>
     </div>

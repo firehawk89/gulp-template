@@ -22,6 +22,10 @@
     margin: 0 0 rem(50) 0;
     text-align: center;
   }
+
+  &__img {
+    margin: 0 auto;
+  }
 }
 
 .general-btn {
@@ -31,11 +35,25 @@
 }
 
 .slider {
+  margin-top: rem(80);
   position: relative;
 
-  &__slide {
-    img {
-      margin: 0 auto;
+  .swiper-slide {
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    picture {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      img {
+        margin: 0 auto;
+        max-width: rem(350);
+      }
     }
   }
 
