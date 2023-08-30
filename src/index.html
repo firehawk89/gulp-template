@@ -8,17 +8,35 @@
     <link rel="stylesheet" href="./css/style.min.css" />
   </head>
   <body>
-    <main class="main">
-      <h1 class="title">Gulp is here!</h1>
-      <p class="text">
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis
-        repellat nihil non reiciendis, voluptatibus, commodi consequatur
-        dignissimos totam nemo eos quo, molestias amet id cupiditate ducimus
-        porro expedita temporibus odio.
-      </p>
-      <img src="./img/earth.gif" alt="Earth" />
-      <a class="btn" href="#">Button</a>
-    </main>
-    <script src="./js/index.min.js"></script>
+    <div class="wrapper">
+      <main class="main">
+        <div class="main__container">
+          <h1 class="main__title">Gulp is here!</h1>
+          <p class="main__text">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+            Perferendis repellat nihil non reiciendis, voluptatibus, commodi
+            consequatur dignissimos totam nemo eos quo, molestias amet id
+            cupiditate ducimus porro expedita temporibus odio.
+          </p>
+          <div class="slider swiper">
+            <div class="slider__body swiper-wrapper">
+              <div class="slider__slide swiper-slide">
+                <img src="./img/earth.gif" alt="Earth" />
+              </div>
+              <div class="slider__slide swiper-slide">
+                <img src="./img/earth.gif" alt="Earth" />
+              </div>
+              <div class="slider__slide swiper-slide">
+                <img src="./img/earth.gif" alt="Earth" />
+              </div>
+            </div>
+            <button class="slider__button slider__button--prev"></button>
+            <button class="slider__button slider__button--next"></button>
+          </div>
+          <a class="general-btn btn" href="#">Button</a>
+        </div>
+      </main>
+    </div>
+    <script src="./js/app.min.js"></script>
   </body>
 </html>
