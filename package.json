@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "The Gulp starting template",
   "main": "gulpfile.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "gulp",
@@ -11,7 +12,7 @@
   "author": "Bochkovskyi",
   "license": "ISC",
   "devDependencies": {
-    "browser-sync": "^2.29.1",
+    "browser-sync": "^2.29.3",
     "css-loader": "^6.8.1",
     "del": "^6.1.1",
     "gulp": "^4.0.2",
