@@ -5,6 +5,7 @@ const scss = require("gulp-sass")(require("sass"));
 const autoprefixer = require("gulp-autoprefixer");
 const concat = require("gulp-concat");
 const uglify = require("gulp-uglify-es").default;
+const webpack = require("webpack-stream");
 const newer = require("gulp-newer");
 const webp = require("gulp-webp");
 const imagemin = require("gulp-imagemin");
@@ -21,7 +22,7 @@ const path = {
   src: {
     html: `${srcPath}/*.html`,
     scss: `${srcPath}/scss/style.scss`,
-    js: `${srcPath}/js/**/*.js`,
+    js: `${srcPath}/js/app.js`,
     img: `${srcPath}/assets/img/**/*.{jpg,jpeg,png,svg,gif}`,
     fonts: `${srcPath}/assets/fonts/**/*.{eot,ttf,woff,woff2,svg}`,
   },
@@ -44,6 +45,25 @@ const path = {
     img: `!${buildPath}/img`,
     fonts: `!${buildPath}/fonts`,
   },
+};
+
+const webpackConfig = {
+  output: {
+    filename: "app.min.js",
+  },
+  module: {
+    rules: [
+      {
+        test: /\.css$/i,
+        use: ["style-loader", "css-loader"],
+      },
+      {
+        test: /\.s[ac]ss$/i,
+        use: ["style-loader", "css-loader", "sass-loader"],
+      },
+    ],
+  },
+  mode: "development",
 };
 
 function sync() {
@@ -78,9 +98,8 @@ function jsTask() {
   return (
     src(path.src.js)
       .pipe(plumber({ errorHandler: notifier.error }))
-      /*src(["node_modules/swiper/swiper-bundle.js", path.src.js])*/
-      .pipe(concat("index.min.js"))
-      .pipe(uglify())
+      .pipe(webpack(webpackConfig))
+      //   .pipe(uglify())
       .pipe(dest(path.build.js))
       .pipe(browserSync.reload({ stream: true }))
   );
@@ -131,5 +150,7 @@ function watcher() {
 
 const tasks = parallel(htmlTask, scssTask, jsTask, imgTask, fontsTask);
 const dev = series(cleanDest, tasks, parallel(watcher, sync));
+const build = series(cleanDest, tasks);
 
 exports.default = dev;
+exports.build = build;
