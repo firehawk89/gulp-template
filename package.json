@@ -10,6 +10,7 @@
   "license": "ISC",
   "devDependencies": {
     "browser-sync": "^2.29.1",
+    "css-loader": "^6.8.1",
     "del": "^6.1.1",
     "gulp": "^4.0.2",
     "gulp-autoprefixer": "^8.0.0",
@@ -22,9 +23,14 @@
     "gulp-ttf2woff2": "^4.0.1",
     "gulp-uglify-es": "^3.0.0",
     "gulp-webp": "^4.0.1",
-    "sass": "^1.62.0"
+    "sass": "^1.66.1",
+    "sass-loader": "^13.3.2",
+    "style-loader": "^3.3.3",
+    "webpack": "^5.88.2",
+    "webpack-stream": "^7.0.0"
   },
   "dependencies": {
-    "gulp-notifier": "^1.0.6"
+    "gulp-notifier": "^1.0.6",
+    "swiper": "^10.2.0"
   }
 }
