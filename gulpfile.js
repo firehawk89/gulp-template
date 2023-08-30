@@ -13,8 +13,13 @@ const fonter = require("gulp-fonter");
 const tt2woff2 = require("gulp-ttf2woff2");
 const del = require("del");
 const replace = require("gulp-replace");
+const gulpIf = require("gulp-if");
 const plumber = require("gulp-plumber");
 const notifier = require("gulp-notifier");
+const sourceMaps = require("gulp-sourcemaps");
+
+const isDev = !process.argv.includes("--build");
+const isProd = process.argv.includes("--build");
 
 const buildPath = "./build";
 const srcPath = "./src";
@@ -64,7 +69,7 @@ const webpackConfig = {
       },
     ],
   },
-  mode: "development",
+  mode: isProd ? "production" : "development",
 };
 
 function sync() {
@@ -87,11 +92,15 @@ function htmlTask() {
 function scssTask() {
   return src(path.src.scss)
     .pipe(plumber({ errorHandler: notifier.error }))
+    .pipe(gulpIf(isDev, sourceMaps.init()))
     .pipe(scss())
-    .pipe(autoprefixer({ overrideBrowserslist: ["last 5 version"] }))
-    .pipe(dest(path.build.css))
+    .pipe(
+      gulpIf(isProd, autoprefixer({ overrideBrowserslist: ["last 5 version"] }))
+    )
+    .pipe(gulpIf(isProd, dest(path.build.css)))
     .pipe(concat("style.min.css"))
-    .pipe(scss({ outputStyle: "compressed" }))
+    .pipe(gulpIf(isProd, scss({ outputStyle: "compressed" })))
+    .pipe(gulpIf(isDev, sourceMaps.write()))
     .pipe(dest(path.build.css))
     .pipe(browserSync.reload({ stream: true }));
 }
@@ -113,19 +122,36 @@ function imgTask() {
     .pipe(newer(path.build.img))
     .pipe(webp())
     .pipe(dest(path.build.img))
-    .pipe(src(path.src.img))
-    .pipe(newer(path.build.img))
+    .pipe(gulpIf(isProd, src(path.src.img)))
+    .pipe(gulpIf(isProd, newer(path.build.img)))
     .pipe(
-      imagemin([
-        imagemin.gifsicle({ interlaced: true }),
-        imagemin.mozjpeg({ quality: 80, progressive: true }),
-        imagemin.optipng({ optimizationLevel: 4 }),
-        imagemin.svgo({
-          plugins: [{ removeViewBox: false }],
-        }),
-      ])
+      gulpIf(
+        isProd,
+        imagemin([
+          imagemin.gifsicle({ interlaced: true }),
+          imagemin.mozjpeg({ quality: 80, progressive: true }),
+          imagemin.optipng({ optimizationLevel: 4 }),
+          imagemin.svgo({
+            plugins: [{ removeViewBox: false }],
+          }),
+        ])
+      )
     )
-    .pipe(dest(path.build.img));
+    .pipe(gulpIf(isProd, dest(path.build.img)));
+
+  // .pipe(src(path.src.img))
+  //   .pipe(newer(path.build.img))
+  //   .pipe(
+  //     imagemin([
+  //       imagemin.gifsicle({ interlaced: true }),
+  //       imagemin.mozjpeg({ quality: 80, progressive: true }),
+  //       imagemin.optipng({ optimizationLevel: 4 }),
+  //       imagemin.svgo({
+  //         plugins: [{ removeViewBox: false }],
+  //       }),
+  //     ])
+  //   )
+  //   .pipe(dest(path.build.img))
 }
 
 function fontsTask() {
@@ -156,3 +182,4 @@ const build = series(cleanDest, tasks);
 
 exports.default = dev;
 exports.build = build;
+exports.isProd = isProd;
