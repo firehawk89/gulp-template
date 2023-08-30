@@ -69,6 +69,7 @@ const webpackConfig = {
       },
     ],
   },
+  devtool: isProd ? false : "eval-source-map",
   mode: isProd ? "production" : "development",
 };
 
